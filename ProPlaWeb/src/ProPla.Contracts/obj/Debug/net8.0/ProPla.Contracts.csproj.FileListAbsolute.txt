@@ -1,0 +1,12 @@
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\bin\Debug\net8.0\ProPla.Contracts.deps.json
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\bin\Debug\net8.0\ProPla.Contracts.dll
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\bin\Debug\net8.0\ProPla.Contracts.pdb
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ProPla.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ProPla.Contracts.AssemblyInfoInputs.cache
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ProPla.Contracts.AssemblyInfo.cs
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ProPla.Contracts.csproj.CoreCompileInputs.cache
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ProPla.Contracts.sourcelink.json
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ProPla.Contracts.dll
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\refint\ProPla.Contracts.dll
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ProPla.Contracts.pdb
+C:\01.PG\00.YzyTs\YzyTs030\ProPlaWeb\src\ProPla.Contracts\obj\Debug\net8.0\ref\ProPla.Contracts.dll
