@@ -1,0 +1,28 @@
+﻿<Window x:Class="Propla.StdCalendar"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Propla"
+        mc:Ignorable="d"
+        Title="StdCalendar" Height="300" Width="350">
+    <Grid >
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="670" />
+        </Grid.RowDefinitions>
+        <StackPanel Height="30" Name="ButtonPanel" Width="Auto"  Orientation="Horizontal" Background="#ffffff" >
+            <Button x:Name="BtnUpdate" Content="更新"     Click="OnBtnClick" Width="100"  Margin="30,0,0,0"  
+                    Visibility="Hidden"
+                    />
+            <Button x:Name="BtnEnd"    Content="戻る"     Click="OnBtnClick" Width="100"  Margin="80,0,0,0"  
+                    />
+        </StackPanel>
+
+        <Calendar Name="Cal" Grid.Row="1"  FontFamily="BIZ UDPゴシック" FontSize="36" 
+                  SelectedDatesChanged="CalendarSelectedDatesChanged"
+            />
+    </Grid>
+</Window>

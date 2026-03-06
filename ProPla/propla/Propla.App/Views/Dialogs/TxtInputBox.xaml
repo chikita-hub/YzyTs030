@@ -1,0 +1,49 @@
+﻿<Window x:Class=" Propla.TxtInputBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Propla"
+        mc:Ignorable="d"
+        Title="TxtInputBox" Height="140" Width="1000">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/DictionaryProPla.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <Border  >
+
+            <TextBox Name="TextBox" 
+                 Margin="0,0,0,0" TextWrapping="Wrap" 
+                 Text=""
+                 VerticalScrollBarVisibility="Auto" 
+                 AcceptsReturn="True"
+                 />
+
+        </Border  >
+        <StackPanel    Height="Auto"  Margin="0,0,0,0" Grid.Row="1"  Orientation="Horizontal" >
+            <Button Name="BtnSet" 
+	                Click="OnBtnClick"
+	                Width="100" Content="登録"  Height="26"
+                        Margin="200,0,0,0" />
+            <Button Name="BtnCancel" 
+	                Click="OnBtnClick"
+	                Width="100" Content="キャンセル"  Height="26"
+                        Margin="300,0,0,0" />
+        </StackPanel>
+
+
+
+    </Grid>
+</Window>

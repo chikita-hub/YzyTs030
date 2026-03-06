@@ -1,0 +1,27 @@
+[
+  {
+    "Key": "Server",
+    "Value": "192.168.14.243",
+    "Extend": "本番：192.168.14.243　　テスト：192.168.13.235"
+  },
+  {
+    "Key": "PgName",
+    "Value": "YzyTs002V5",
+    "Extend": "DB Access"
+  },
+  {
+    "Key": "PgPath",
+    "Value": "YzyTs002",
+    "Extend": "本番：YzyTs002　　テスト：YzyTs002Test"
+  },
+  {
+    "Key": "LnkName",
+    "Value": "商品情報マスタ.lnk",
+    "Extend": "本番：商品情報マスタ.lnk　　テスト：テスト.lnk"
+  },
+  {
+    "Key": "Version",
+    "Value": "5.02",
+    "Extend": ""
+  }
+]

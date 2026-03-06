@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "propla", "propla.csproj", "{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ソリューション項目", "ソリューション項目", "{B2A26C65-4FDF-4D8F-9787-BC345288346C}"
+	ProjectSection(SolutionItems) = preProject
+		propla.ico = propla.ico
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Debug|x64.ActiveCfg = Debug|x64
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Debug|x64.Build.0 = Debug|x64
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Release|x64.ActiveCfg = Release|x64
+		{FF2A82AA-8329-429E-8ACF-EA35B9F9DD81}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {497F51BF-8E04-434A-88DB-F0BC9D9A02D1}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,603 @@
+﻿// ProPlaOut.cs
+// 目的: 商品企画データを Excel へ出力するユーティリティ。
+
+using Microsoft.Office.Interop.Excel;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Windows;
+using Excel = Microsoft.Office.Interop.Excel;
+
+namespace Propla
+{
+    /// <summary>
+    /// 商品企画データの Excel 出力を担当するクラス。
+    /// 1) 列リストをそのまま出力する方式（ExcelColumn）
+    /// 2) 既存テンプレートに差し込む方式（ExcelOneSheet / ExcelMultipleSheet2）
+    /// の2パターンを提供します。
+    /// </summary>
+    internal class ProPlaOut
+    {
+        // ViewModel（マスタ参照や変換ルックアップに使用）
+        private ViewModel _vm = new();
+
+        // 出力ファイル／テンプレート関連（実行中に上書き）
+        private string outFile = "";
+        private string outSheet = "";
+        private string templateFile = "";
+        private string templateSheet = "";
+
+        // ひな形 Excel の格納ディレクトリ
+        // （UNC/固定パスのため、環境に応じて App.config への抽出も検討可。今回はロジック変更なしのため現状維持）
+        private string templateExcel = @"Z:\商品企画室\ExcelTemplate\";
+
+        // --------------------------------------------------------------------------------
+        // 公開 API
+        // --------------------------------------------------------------------------------
+
+        /// <summary>
+        /// 指定の列リスト（<c>ColList</c>）に従って、商品企画データを新規 Excel に出力します。
+        /// </summary>
+        /// <param name="productPlannings">出力対象の商品企画データ。</param>
+        /// <param name="outColumnList">出力する列リスト（列ID・列名）。</param>
+        /// <returns>作成した Excel ファイルのフルパス。例外時は再スロー。</returns>
+        public string ExcelOut(List<ProductPlanning> productPlannings, List<ColList> outColumnList)
+        {
+            try
+            {
+                // 出力ファイル名: タイムスタンプを含めて一意化
+                DateTime now = DateTime.Now;
+                outFile = @"C:\YzyTs\temp\YzyTs002\OUT\out_" + now.ToString("yyMMddHHmmss") + ".xlsx";
+
+                // 列出力モード（ロジックは既存の ExcelColum を踏襲）
+                ExcelColum(productPlannings, outColumnList, outFile);
+
+                return outFile;
+            }
+            catch (System.Exception ex)
+            {
+                // 既存の通知仕様を尊重（MessageBox + 再スロー）
+                MessageBox.Show("『 ExcelOut』" + ex.Message);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// ひな形 Excel（テンプレート）に対して、商品企画データを差し込んで出力します。
+        /// テンプレート側のフラグにより、「単一シート」または「複数シート」に分岐します。
+        /// </summary>
+        /// <param name="productPlannings">出力対象の商品企画データ。</param>
+        /// <param name="outTemplate">テンプレート識別子（マスタ <c>MstOutTemplateDt</c> の value）。</param>
+        /// <returns>作成した Excel ファイルのフルパス。見つからない等は空文字を返す。</returns>
+        public string ExcelOut(List<ProductPlanning> productPlannings, string outTemplate)
+        {
+            try
+            {
+                // 出力テンプレートの参照を取得
+                var query1 = _vm.ItemMst.MstOutTemplateDt.AsEnumerable()
+                                .FirstOrDefault(x => x["value"].ToString() == outTemplate);
+                if (query1 is null)
+                {
+                    // 既存仕様: 見つからない場合は MessageBox を出して空文字を返す
+                    MessageBox.Show("OutTemplateが見つかりません：" + outTemplate);
+                    return "";
+                }
+
+                // 出力先ファイル名
+                DateTime now = DateTime.Now;
+                outFile = @"C:\YzyTs\temp\YzyTs002\OUT\out_" + now.ToString("yyMMddHHmmss") + ".xlsx";
+
+                // テンプレートファイルのフルパス
+                templateFile = templateExcel + (string)query1["extend_field_2"];
+
+                // extend_field_1 == "1" は「単一シート」テンプレート想定
+                if ((string)query1["extend_field_1"] == "1")
+                {
+                    // 既存仕様: テンプレートをコピーして編集
+                    File.Copy(templateFile, outFile, true);
+                    ExcelOneSheet(productPlannings, outFile);
+                }
+                else
+                {
+                    // 既存仕様: テンプレートからシートを複製しながら複数シートへ展開
+                    ExcelMultipleSheet2(productPlannings, outFile);
+                }
+                return outFile;
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("『 ExcelOut』" + ex.Message);
+                throw;
+            }
+        }
+
+        // --------------------------------------------------------------------------------
+        // 単一シート埋め込み（テンプレートをコピーして編集）
+        // --------------------------------------------------------------------------------
+
+        /// <summary>
+        /// 単一シートのテンプレートに対し、雛形行（%ProductPlanningID% を含む行）を見つけて
+        /// それを基に 1レコードずつ複製・置換出力します。
+        /// </summary>
+        /// <param name="productPlannings">出力対象データ。</param>
+        /// <param name="outExcel">編集対象の Excel ファイルパス（テンプレートをコピーしたもの）。</param>
+        private void ExcelOneSheet(List<ProductPlanning> productPlannings, string outExcel)
+        {
+            try
+            {
+                // Excel を起動・テンプレートを開く
+                var excelApp = new Excel.Application();
+                var workbook = excelApp.Workbooks.Open(outExcel, ReadOnly: false);
+                var sheet = (Excel.Worksheet)workbook.Sheets[1];
+
+                // 雛形行（A列 "%ProductPlanningID%" を含む行）を探索
+                int row;
+                int rowTemplate;
+                int excelStartMaxRow = 100;
+                for (row = 1; row <= excelStartMaxRow; row++)
+                {
+                    var value = ((Excel.Range)sheet.Cells[row, 1]).Value;
+                    if (value != null && value == "%ProductPlanningID%")
+                    {
+                        break;
+                    }
+                }
+                if (row >= excelStartMaxRow)
+                {
+                    MessageBox.Show("%ProductPlanningID%がA列に存在しません");
+                    // 既存仕様: 続行不可のため戻る
+                    workbook.Save();
+                    workbook.Close();
+                    excelApp.Quit();
+                    return;
+                }
+                rowTemplate = row; // 雛形行の行番号を保持（以降の複製元）
+
+                foreach (ProductPlanning item in productPlannings)
+                {
+                    // 商品カテゴリから部署IDなどの付帯情報を取得
+                    var query1 = _vm.ItemMst.MstProductCategoryDt.AsEnumerable()
+                        .FirstOrDefault(x => x["value"].ToString() == item.ProductCategory);
+                    if (query1 is null)
+                    {
+                        MessageBox.Show("ProductCategoryが見つかりません：" + item.ProductCategory);
+                        workbook.Save();
+                        workbook.Close();
+                        excelApp.Quit();
+                        return;
+                    }
+                    string organizationId = query1["extend_field_1"].ToString();
+
+                    // 行を一つ進めて雛形行をコピー（横 300 列まで対象）
+                    row++;
+                    int columnStart = 1;   // A列
+                    int columnEnd = 300;   // 300列
+                    Excel.Range sourceRange = sheet.Cells[rowTemplate, columnStart].Resize[1, columnEnd - columnStart + 1];
+                    Excel.Range targetRange = sheet.Cells[row, columnStart].Resize[1, columnEnd - columnStart + 1];
+                    sourceRange.Copy(targetRange);
+
+                    // 行内の %...% プレースホルダを商品データで置換
+                    for (int col = 1; col < columnEnd; col++)
+                    {
+                        string inCell = ((Excel.Range)sheet.Cells[row, col]).Value;
+                        if (inCell == null || inCell == "")
+                        {
+                            // 雛形の右端に達した想定で早期終了
+                            break;
+                        }
+                        if (inCell.IndexOf("%") >= 0)
+                        {
+                            Excel.Range cell = (Excel.Range)sheet.Cells[row, col];
+                            // 既存ロジック: TextConv で %...% を置換して設定
+                            cell.Value = TextConv(inCell, item, organizationId);
+                        }
+                    }
+                }
+
+                // A列を削除（雛形用の目印等を落とす）
+                var rangeDel = sheet.Range["A:A"];
+                rangeDel.Delete(XlDeleteShiftDirection.xlShiftToLeft);
+
+                // 雛形行を削除し、上に詰める
+                sheet.Rows[rowTemplate].Delete(Excel.XlDeleteShiftDirection.xlShiftUp);
+
+                // 保存・クローズ
+                workbook.Save();
+                workbook.Close();
+                excelApp.Quit();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("『 ExcelOut』" + ex.Message);
+                throw;
+            }
+        }
+
+        // --------------------------------------------------------------------------------
+        // 複数シート埋め込み（テンプレートからシート複製）
+        // --------------------------------------------------------------------------------
+
+        /// <summary>
+        /// テンプレート内のシートを複製し、商品ごとに 1 シート作成します。
+        /// 対象シート名は「カテゴリ別に紐づくテンプレート名（なければ ALL をフォールバック）」を使用します。
+        /// </summary>
+        /// <param name="productPlannings">出力対象データ。</param>
+        /// <param name="outExcel">出力先ファイルパス（新規作成して保存）。</param>
+        private void ExcelMultipleSheet2(List<ProductPlanning> productPlannings, string outExcel)
+        {
+            string errMsg = "";
+
+            try
+            {
+                // 新規ブックを用意し、テンプレートブックを参照
+                var excelApp = new Excel.Application();
+                Excel.Workbook workbook = excelApp.Workbooks.Add();
+                var workbookTemp = excelApp.Workbooks.Open(templateFile, ReadOnly: true);
+
+                // テンプレート上のシート名一覧を取得
+                List<string> sheetNames = new List<string>();
+                foreach (Excel.Worksheet worksheet in workbookTemp.Worksheets)
+                {
+                    sheetNames.Add(worksheet.Name);
+                }
+
+                // ローカル関数: 指定名のシートが無ければ "ALL" を返す
+                string GetSheetName(string s)
+                {
+                    bool allFlg = false;
+                    foreach (string sheetName in sheetNames)
+                    {
+                        if (sheetName == s) return sheetName;
+                        if (sheetName == "ALL") allFlg = true;
+                    }
+                    if (allFlg == true) return "ALL";
+                    MessageBox.Show("Sheetが見つかりません：" + s);
+                    return "";
+                }
+
+                int sheetsAddCnt = 0;
+
+                foreach (ProductPlanning item in productPlannings)
+                {
+                    // カテゴリ情報を取得し、テンプレートシート名を決定
+                    errMsg = item.ProductCategory;
+                    var query2 = _vm.ItemMst.MstProductCategoryDt.AsEnumerable()
+                                    .FirstOrDefault(x => x["value"].ToString() == item.ProductCategory);
+                    if (query2 is null)
+                    {
+                        MessageBox.Show("ProductPlanningIDが見つかりません：" + item.ProductCategory);
+                        workbook.Close(false);
+                        workbookTemp.Close(false);
+                        excelApp.Quit();
+                        return;
+                    }
+                    templateSheet = GetSheetName((string)query2["extend_field_2"]);
+                    if (templateSheet == "")
+                    {
+                        workbook.Close(false);
+                        workbookTemp.Close(false);
+                        excelApp.Quit();
+                        return;
+                    }
+
+                    // 出力シート名は正式商品名
+                    string organizationId = query2["extend_field_1"].ToString();
+                    outSheet = item.ProductNameOfficial;
+                    errMsg += ":" + outSheet;
+
+                    // テンプレートシートを複製して先頭に挿入
+                    Excel.Worksheet sheetA = workbookTemp.Sheets[templateSheet];
+                    sheetsAddCnt += 1;
+                    ((Excel.Worksheet)sheetA).Copy(Before: workbook.Sheets[sheetsAddCnt]);
+
+                    // 複製したシートに名前と内容を設定
+                    var sheet = (Excel.Worksheet)workbook.Sheets[sheetsAddCnt];
+                    workbook.Sheets[sheetsAddCnt].Name = outSheet;
+                    sheetA.UsedRange.Copy(workbook.Sheets[sheetsAddCnt].UsedRange);
+
+                    // UsedRange の範囲全体を走査して %...% を置換
+                    int rowCount = workbook.Sheets[sheetsAddCnt].UsedRange.Rows.Count;
+                    int columnCount = workbook.Sheets[sheetsAddCnt].UsedRange.Columns.Count;
+
+                    for (int row = 1; row <= rowCount; row++)
+                    {
+                        for (int col = 1; col <= columnCount; col++)
+                        {
+                            var inCell = ((Excel.Range)sheet.Cells[row, col]).Value;
+                            Excel.Range cell = sheet.Cells[row, col];
+                            cell.Value = TextConv(inCell, item, organizationId);
+                        }
+                    }
+                }
+
+                // デフォルトで残った空シートを削除（最後尾の1枚想定）
+                var sheetDel = (Excel.Worksheet)workbook.Sheets[sheetsAddCnt + 1];
+                sheetDel.Delete();
+
+                // 保存・後処理
+                workbook.SaveAs(outExcel);
+                workbook.Close();
+                workbookTemp.Close(false);
+                Marshal.ReleaseComObject(workbookTemp);
+                Marshal.ReleaseComObject(excelApp);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("『 ExcelOut』" + ex.Message);
+                throw;
+            }
+        }
+
+        // --------------------------------------------------------------------------------
+        // 列出力（列定義リストに基づくフラット出力）
+        // --------------------------------------------------------------------------------
+
+        /// <summary>
+        /// 列リストに基づいて、新規ワークブックの1枚目にヘッダ・明細をフラットに出力します。
+        /// 列値の変換は <c>_vm.GetMstConv</c> を用い、権限外の値は "*****" として出力します。
+        /// </summary>
+        private void ExcelColum(List<ProductPlanning> productPlannings, List<ColList> column, string outFile)
+        {
+            try
+            {
+                // 新規ワークブック・1シート目を用意
+                var excelApp = new Excel.Application();
+                Excel.Workbook workbook = excelApp.Workbooks.Add();
+                Excel.Worksheet sheet = (Excel.Worksheet)workbook.Sheets[1];
+
+                // 書式: 文字列（@）に統一（ID等の先頭ゼロ欠落を防ぐ）
+                var startColumn = sheet.Cells[1, 1];
+                var endColumn = sheet.Cells[productPlannings.Count + 1, column.Count];
+                var range = sheet.Range[startColumn, endColumn];
+                range.NumberFormat = "@";
+
+                // ヘッダ行（1行目）
+                for (int i = 0; i < column.Count; i++)
+                {
+                    Excel.Range cell = (Excel.Range)sheet.Cells[1, i + 1];
+                    string colName = column[i].ColNm;
+                    cell.Value = colName;
+                }
+
+                // 明細（2行目以降）
+                int row = 2;
+                foreach (ProductPlanning item in productPlannings)
+                {
+                    var query1 = _vm.ItemMst.MstProductCategoryDt.AsEnumerable()
+                                            .FirstOrDefault(x => x["value"].ToString() == item.ProductCategory);
+                    if (query1 is null)
+                    {
+                        MessageBox.Show("ProductCategoryが見つかりません：" + item.ProductCategory);
+                        workbook.SaveAs(outFile);
+                        workbook.Close();
+                        excelApp.Quit();
+                        return;
+                    }
+                    string organizationId = query1["extend_field_1"].ToString();
+
+                    for (int i = 0; i < column.Count; i++)
+                    {
+                        Excel.Range cell = (Excel.Range)sheet.Cells[row, i + 1];
+
+                        // 列ID -> 実際のプロパティ名（大文字小文字無視で一致を探す）
+                        string colId = column[i].ColId;
+                        string propName = GetPropertyName(colId);
+
+                        string val = (string)item[propName];
+                        string s = _vm.GetMstConv(propName, val);
+                        if (s.IndexOf("$$$Error$$$") >= 0)
+                        {
+                            MessageBox.Show(s);
+                        }
+
+                        // 権限外のデータはマスク
+                        if (!MainWindow.IsOutExcelData(propName, organizationId))
+                        {
+                            s = "*****";
+                        }
+                        cell.Value = s;
+                    }
+                    row++;
+                }
+
+                // 仕上げ: 枠線・列幅の設定と保存
+                BorderLineAdd(sheet.UsedRange);
+                ColumnWidthSet(sheet.UsedRange);
+
+                workbook.SaveAs(outFile);
+                workbook.Close();
+                excelApp.Quit();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("『 ExcelOut』" + ex.Message);
+                throw;
+            }
+        }
+
+        // --------------------------------------------------------------------------------
+        // 補助（プロパティ名解決・見た目調整）
+        // --------------------------------------------------------------------------------
+
+        /// <summary>
+        /// 与えられたプロパティ名（大文字小文字無視）を <see cref="ProductPlanning"/> 上の
+        /// 実在のプロパティ名に正規化して返します。見つからない場合は空文字。
+        /// </summary>
+        string GetPropertyName(string inStr)
+        {
+            Type outType = typeof(ProductPlanning);
+
+            // OutListクラスのプロパティを取得
+            PropertyInfo[] properties = outType.GetProperties();
+
+            // プロパティ名をループで参照
+            foreach (PropertyInfo property in properties)
+            {
+                string propertyName = property.Name;
+                if (propertyName.ToLower() == inStr.ToLower())
+                {
+                    return propertyName;
+                }
+            }
+            return "";
+        }
+
+        /// <summary>
+        /// 罫線（外枠）を UsedRange に一括適用します。
+        /// </summary>
+        private void BorderLineAdd(Excel.Range range)
+        {
+            range.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+            range.Borders.Weight = Excel.XlBorderWeight.xlThin;
+            range.Borders.ColorIndex = Excel.XlColorIndex.xlColorIndexAutomatic;
+        }
+
+        /// <summary>
+        /// 各列の最大文字数を走査して、おおよその見やすい列幅に調整します（最大 50）。
+        /// </summary>
+        private void ColumnWidthSet(Excel.Range range)
+        {
+            // 各列の最大幅を取得
+            for (int i = 1; i <= range.Columns.Count; i++)
+            {
+                Excel.Range columnRange = range.Columns[i];
+                double columnWidth = 0;
+
+                try
+                {
+                    foreach (Excel.Range cell in columnRange.Cells)
+                    {
+                        double cellWidth = cell.Value?.ToString().Length ?? 0;
+                        if (cellWidth > columnWidth)
+                        {
+                            columnWidth = cellWidth;
+                        }
+                    }
+
+                    if (columnWidth != 0)
+                    {
+                        // ざっくり 2 倍にして文字つぶれを回避（上限 50）
+                        columnWidth = columnWidth * 2;
+                        if (columnWidth > 50)
+                        {
+                            columnWidth = 50;
+                        }
+                        columnRange.ColumnWidth = columnWidth;
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show("『 ExcelOut』" + ex.Message);
+                    throw;
+                }
+            }
+        }
+
+        // --------------------------------------------------------------------------------
+        // 文字列置換（%...% プレースホルダを、商品データや変換ルールで置換）
+        // --------------------------------------------------------------------------------
+
+        /// <summary>
+        /// セル内の文字列に含まれる %...% プレースホルダを、<paramref name="item"/> のプロパティや
+        /// 変換ルールで解決した文字列に置換して返します。
+        /// - ProductPlanning のプロパティ名と一致する場合は、その値を <c>_vm.GetMstConv</c> で最終化
+        /// - それ以外は <c>_vm.GetConvText</c> へ委譲
+        /// - 組織（<paramref name="organizationId"/>）の出力可否は呼び出し側（ExcelOneSheet / ExcelMultipleSheet2 等）で判断
+        /// </summary>
+        private string TextConv(Object inObj, ProductPlanning item, string organizationId)
+        {
+            try
+            {
+                string outText = "";
+                string inText = "";
+                int endIndex = -1;
+
+                if (inObj == null)
+                {
+                    return inText;
+                }
+                inText = inObj.ToString();
+
+
+                int startIndex = inText.IndexOf("%");
+                while (startIndex != -1)
+                {
+                    outText += inText.Substring(endIndex + 1, startIndex - endIndex - 1);
+                    endIndex = inText.IndexOf("%", startIndex + 1);
+                    if (endIndex != -1)
+                    {
+                        string placeholder = inText.Substring(startIndex + 1, endIndex - startIndex - 1);
+                        startIndex = inText.IndexOf("%", endIndex + 1);
+
+                        string s;
+                        if (productPlanningColChk(placeholder))
+                        {
+                            if (MainWindow.IsOutExcelData(placeholder, organizationId))
+                            {
+                                // ProductPlanning のプロパティ名として扱う（権限制御は呼び出し側で実施）
+                                s = _vm.GetMstConv(placeholder, item[placeholder].ToString());
+                            }
+                            else
+                            {
+                                // その他の置換語は ViewModel の変換テーブルに委譲
+                                s = "*****";
+                            }
+                        }
+                        else
+                        {
+                            s = "$$$Error$$$:" + placeholder + "は「基本情報.xlsx」の項目に定義されていません";
+                        }
+
+                        if (s.IndexOf("$$$Error$$$") >= 0)
+                        {
+                            MessageBox.Show(s);
+                        }
+
+                        outText += s;
+                    }
+                    else
+                    {
+                        startIndex = -1;
+                    }
+                }
+
+                outText += inText.Substring(endIndex + 1);
+                return outText;
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("『 ExcelOut』" + ex.Message);
+                throw;
+            }
+
+
+        }
+
+        bool productPlanningColChk(string colName)
+        {
+            // ProductPlanning クラスの型情報を取得
+            Type type = typeof(ProductPlanning);
+
+            // プロパティ情報を取得
+            PropertyInfo[] properties = type.GetProperties();
+
+            // プロパティ名をチェック
+            foreach (var property in properties)
+            {
+                if (property.Name == colName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+    }
+}
