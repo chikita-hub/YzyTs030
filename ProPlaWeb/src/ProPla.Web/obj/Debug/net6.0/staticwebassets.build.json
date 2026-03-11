@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ZRAwXLnroXvw7OT/cX49rGLDcPdvgFb26lO5A7VTwWk=",
+  "Hash": "QKk5WJ7yVX6CKbka1nsJv1qqaicNBLpzVcE+STiopDA=",
   "Source": "ProPla.Web",
   "BasePath": "_content/ProPla.Web",
   "Mode": "Default",
@@ -91,25 +91,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
-    },
-    {
-      "Identity": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "SourceId": "ProPla.Web",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\",
-      "BasePath": "_content/ProPla.Web",
-      "RelativePath": "css/open-iconic/FONT-LICENSE",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
       "Identity": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
@@ -224,6 +205,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Identity": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "SourceId": "ProPla.Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\",
+      "BasePath": "_content/ProPla.Web",
+      "RelativePath": "css/open-iconic/FONT-LICENSE",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
       "Identity": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
