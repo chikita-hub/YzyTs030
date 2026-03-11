@@ -1,0 +1,15 @@
+@page "/auth/login"
+@inject NavigationManager Nav
+
+<p>ログインページへ移動中...</p>
+
+@code {
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Nav.NavigateTo("/Account/Login", forceLoad: true);
+        }
+        return Task.CompletedTask;
+    }
+}

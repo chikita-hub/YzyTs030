@@ -1,0 +1,37 @@
+@page
+@model ProPla.Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "ログイン";
+}
+
+<h3>ログイン</h3>
+
+<form method="post">
+    <div>
+        <label>ユーザーID</label>
+        <input asp-for="Input.UserId" />
+        <span asp-validation-for="Input.UserId"></span>
+    </div>
+
+    <div>
+        <label>パスワード</label>
+        <input asp-for="Input.Password" type="password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+
+    <div>
+        <input asp-for="Input.RememberMe" type="checkbox" />
+        <label asp-for="Input.RememberMe">ログイン状態を保持</label>
+    </div>
+
+    <button type="submit">ログイン</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div style="color:red">@Model.ErrorMessage</div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
