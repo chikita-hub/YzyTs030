@@ -26,14 +26,13 @@ public class LoginModel : PageModel
         public string UserId { get; set; } = "";
 
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; } = "";
 
         public bool RememberMe { get; set; }
     }
 
-    public void OnGet()
-    {
-    }
+    public void OnGet() { }
 
     public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
@@ -46,9 +45,7 @@ public class LoginModel : PageModel
             lockoutOnFailure: true);
 
         if (result.Succeeded)
-        {
             return LocalRedirect(returnUrl ?? "/propla/menu");
-        }
 
         if (result.IsLockedOut)
         {
