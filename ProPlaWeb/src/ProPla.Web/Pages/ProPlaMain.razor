@@ -1,0 +1,79 @@
+@page "/propla/main/{ProductPlanningId}"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+
+<PageTitle>ProPla Main</PageTitle>
+
+<h1>商品情報マスタ（詳細）</h1>
+
+<div class="d-flex gap-2 mb-3">
+    <button class="btn btn-secondary">更新許可</button>
+    <button class="btn btn-primary" @onclick="EnableProductNameEdit">更新</button>
+    <button class="btn btn-outline-primary">引用</button>
+    <a class="btn btn-outline-secondary" href="/propla/search">戻る</a>
+</div>
+
+<div class="alert alert-success" role="alert">
+    商品ID: <strong>@ProductPlanningId</strong>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">商品基本情報</div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">商品ID</label>
+                <input class="form-control" value="@ProductPlanningId" readonly />
+            </div>
+            <div class="col-md-8">
+                <label class="form-label">商品名（正式）</label>
+                <input class="form-control" @bind="EditableProductName" readonly="@(!IsProductNameEditable)" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">商品区分</label>
+                <input class="form-control" value="健康食品" readonly />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">本発売日</label>
+                <input class="form-control" value="2026/03/01" readonly />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">状態</label>
+                <input class="form-control" value="有効" readonly />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">メモ</div>
+    <div class="card-body">
+        <textarea class="form-control" rows="4" readonly>ProPlaMain.xaml の編集画面を Web 版で簡略表示しています。</textarea>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ProductPlanningId { get; set; } = string.Empty;
+
+    private bool IsProductNameEditable { get; set; }
+
+    private string EditableProductName { get; set; } = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        IsProductNameEditable = false;
+        EditableProductName = ProductPlanningId switch
+        {
+            "PP-0001" => "青汁プレミアム",
+            "PP-0002" => "コラーゲンドリンク",
+            "PP-0003" => "マルチビタミン",
+            _ => "商品名未設定"
+        };
+    }
+
+    private void EnableProductNameEdit()
+    {
+        IsProductNameEditable = true;
+    }
+}

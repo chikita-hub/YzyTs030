@@ -1,6 +1,7 @@
 @page "/propla/search"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
+@inject NavigationManager Nav
 
 <PageTitle>ProPla Search</PageTitle>
 
@@ -22,6 +23,7 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
+            <th>‘I‘ğ</th>
             <th>Šé‰æID</th>
             <th>¤•i–¼</th>
             <th>ó‘Ô</th>
@@ -31,6 +33,7 @@
         @foreach (var item in filteredItems)
         {
             <tr>
+                <td><button class="btn btn-sm btn-primary" @onclick="(() => SelectItem(item.Id))">‘I‘ğ</button></td>
                 <td>@item.Id</td>
                 <td>@item.Name</td>
                 <td>@item.Status</td>
@@ -72,4 +75,9 @@
     }
 
     private sealed record ProductRow(string Id, string Name, string Status);
+
+    private void SelectItem(string id)
+    {
+        Nav.NavigateTo($"/propla/main/{id}");
+    }
 }
