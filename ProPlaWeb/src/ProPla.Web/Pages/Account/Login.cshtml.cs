@@ -32,7 +32,10 @@ public class LoginModel : PageModel
         public bool RememberMe { get; set; }
     }
 
-    public void OnGet() { }
+    public void OnGet()
+    {
+        Input.Password = "Admin@12345";
+    }
 
     public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {

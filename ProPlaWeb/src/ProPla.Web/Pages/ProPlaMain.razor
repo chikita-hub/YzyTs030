@@ -4,53 +4,85 @@
 
 <PageTitle>ProPla Main</PageTitle>
 
-<h1>¤•iî•ñƒ}ƒXƒ^iÚ×j</h1>
+<h1>å•†å“æƒ…å ±ãƒžã‚¹ã‚¿ï¼ˆè©³ç´°ï¼‰</h1>
 
 <div class="d-flex gap-2 mb-3">
-    <button class="btn btn-secondary">XV‹–‰Â</button>
-    <button class="btn btn-primary" @onclick="EnableProductNameEdit">XV</button>
-    <button class="btn btn-outline-primary">ˆø—p</button>
-    <a class="btn btn-outline-secondary" href="/propla/search">–ß‚é</a>
+    <button class="btn btn-secondary">æ›´æ–°è¨±å¯</button>
+    <button class="btn btn-primary" @onclick="EnableProductNameEdit">æ›´æ–°</button>
+    <button class="btn btn-outline-primary">å¼•ç”¨</button>
+    <a class="btn btn-outline-secondary" href="/propla/search">æˆ»ã‚‹</a>
 </div>
 
 <div class="alert alert-success" role="alert">
-    ¤•iID: <strong>@ProductPlanningId</strong>
+    å•†å“ID: <strong>@ProductPlanningId</strong>
 </div>
 
 <div class="card mb-3">
-    <div class="card-header">¤•iŠî–{î•ñ</div>
+    <div class="card-header">å•†å“åŸºæœ¬æƒ…å ±</div>
     <div class="card-body">
         <div class="row g-3">
             <div class="col-md-4">
-                <label class="form-label">¤•iID</label>
+                <label class="form-label">å•†å“ID</label>
                 <input class="form-control" value="@ProductPlanningId" readonly />
             </div>
             <div class="col-md-8">
-                <label class="form-label">¤•i–¼i³Ž®j</label>
+                <label class="form-label">å•†å“åï¼ˆæ­£å¼ï¼‰</label>
                 <input class="form-control" @bind="EditableProductName" readonly="@(!IsProductNameEditable)" />
             </div>
             <div class="col-md-4">
-                <label class="form-label">¤•i‹æ•ª</label>
-                <input class="form-control" value="Œ’NH•i" readonly />
+                <label class="form-label">å•†å“åŒºåˆ†</label>
+                <input class="form-control" value="å¥åº·é£Ÿå“" readonly />
             </div>
             <div class="col-md-4">
-                <label class="form-label">–{”­”„“ú</label>
+                <label class="form-label">æœ¬ç™ºå£²æ—¥</label>
                 <input class="form-control" value="2026/03/01" readonly />
             </div>
             <div class="col-md-4">
-                <label class="form-label">ó‘Ô</label>
-                <input class="form-control" value="—LŒø" readonly />
+                <label class="form-label">çŠ¶æ…‹</label>
+                <input class="form-control" value="æœ‰åŠ¹" readonly />
             </div>
         </div>
     </div>
 </div>
 
 <div class="card">
-    <div class="card-header">ƒƒ‚</div>
+    <div class="card-header">ãƒ¡ãƒ¢</div>
     <div class="card-body">
-        <textarea class="form-control" rows="4" readonly>ProPlaMain.xaml ‚Ì•ÒW‰æ–Ê‚ð Web ”Å‚ÅŠÈ—ª•\Ž¦‚µ‚Ä‚¢‚Ü‚·B</textarea>
+        <textarea class="form-control" rows="4" readonly>ProPlaMain.xaml ã®ç·¨é›†ç”»é¢ã‚’ Web ç‰ˆã§ç°¡ç•¥è¡¨ç¤ºã—ã¦ã„ã¾ã™ã€‚</textarea>
     </div>
 </div>
+
+
+<td>
+    <p>
+    </p><div class="image-wrapper">
+        <img src="
+https://yazuyaoffice.sharepoint.com/:i:/r/sites/yazuya-all/Shared%20Documents/General/01.%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%AF%8E/06.%E5%90%84%E7%A8%AE%E6%92%AE%E5%BD%B1%E3%83%87%E3%83%BC%E3%82%BF/01.%E5%95%86%E5%93%81%E9%96%A2%E9%80%A3/%E9%A4%8A%E7%94%9F%E9%9D%92%E6%B1%81/%E9%9D%92%E6%B1%81%E7%B2%92_%E3%83%AC%E3%82%AE%E3%83%A5%E7%AE%B1%E3%83%91%E3%82%B9%E4%BB%98201405.jpg?csf=1&web=1&e=Qe6aPQ
+">
+    </div>
+</td>
+
+<td>
+    <p>
+        è¢‹
+    </p><div class="image-wrapper">
+        <img src="
+https://yazuyaoffice.sharepoint.com/:i:/r/sites/yazuya-all/Shared%20Documents/General/01.%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%AF%8E/06.%E5%90%84%E7%A8%AE%E6%92%AE%E5%BD%B1%E3%83%87%E3%83%BC%E3%82%BF/01.%E5%95%86%E5%93%81%E9%96%A2%E9%80%A3/%E9%A4%8A%E7%94%9F%E9%9D%92%E6%B1%81/%E9%9D%92%E6%B1%81%E7%B2%92_%E5%B0%8F%E8%A2%8B.jpg?csf=1&web=1&e=dAlFE6
+">
+    </div>
+</td>
+
+<td>
+    <p>
+        ç²’
+    </p><div class="image-wrapper">
+        <img src="
+https://yazuyaoffice.sharepoint.com/:i:/r/sites/yazuya-all/Shared%20Documents/General/01.%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%AF%8E/06.%E5%90%84%E7%A8%AE%E6%92%AE%E5%BD%B1%E3%83%87%E3%83%BC%E3%82%BF/01.%E5%95%86%E5%93%81%E9%96%A2%E9%80%A3/%E9%A4%8A%E7%94%9F%E9%9D%92%E6%B1%81/%E9%9D%92%E6%B1%81%E7%B2%92_2%E3%83%91%E3%82%B9%E4%BB%98.jpg?csf=1&web=1&e=g4pMMT
+">
+    </div>
+</td>
+
+
 
 @code {
     [Parameter]
@@ -65,10 +97,10 @@
         IsProductNameEditable = false;
         EditableProductName = ProductPlanningId switch
         {
-            "PP-0001" => "Â`ƒvƒŒƒ~ƒAƒ€",
-            "PP-0002" => "ƒRƒ‰[ƒQƒ“ƒhƒŠƒ“ƒN",
-            "PP-0003" => "ƒ}ƒ‹ƒ`ƒrƒ^ƒ~ƒ“",
-            _ => "¤•i–¼–¢Ý’è"
+            "PP-0001" => "é’æ±ãƒ—ãƒ¬ãƒŸã‚¢ãƒ ",
+            "PP-0002" => "ã‚³ãƒ©ãƒ¼ã‚²ãƒ³ãƒ‰ãƒªãƒ³ã‚¯",
+            "PP-0003" => "ãƒžãƒ«ãƒãƒ“ã‚¿ãƒŸãƒ³",
+            _ => "å•†å“åæœªè¨­å®š"
         };
     }
 
