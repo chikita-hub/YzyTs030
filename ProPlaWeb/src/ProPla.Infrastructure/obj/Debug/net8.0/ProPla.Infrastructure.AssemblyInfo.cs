@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProPla.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c372d74426e83e40073cbccff977e32534c61fbe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5e627924f2bcfb7460895568ac48c8120130a7f")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProPla.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProPla.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

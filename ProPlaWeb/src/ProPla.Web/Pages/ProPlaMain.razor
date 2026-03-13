@@ -1,111 +1,149 @@
-@page "/propla/main/{ProductPlanningId}"
+ @page "/propla/main/{ProductPlanningId}"
 @attribute [Authorize]
-@using Microsoft.AspNetCore.Authorization
+ @using Microsoft.AspNetCore.Authorization
+ @using Microsoft.EntityFrameworkCore
+ @using ProPla.Web.Data
+ @inject AppDbContext DbContext
 
 <PageTitle>ProPla Main</PageTitle>
 
 <h1>商品情報マスタ（詳細）</h1>
 
+
 <div class="d-flex gap-2 mb-3">
     <button class="btn btn-secondary">更新許可</button>
-    <button class="btn btn-primary" @onclick="EnableProductNameEdit">更新</button>
-    <button class="btn btn-outline-primary">引用</button>
+    <button class="btn btn-primary" @onclick="EnableProductNameEdit" disabled="@(CurrentItem is null)">更新</button>
+    <button class="btn btn-outline-primary" disabled>引用</button>
     <a class="btn btn-outline-secondary" href="/propla/search">戻る</a>
 </div>
 
-<div class="alert alert-success" role="alert">
-    商品ID: <strong>@ProductPlanningId</strong>
-</div>
+ @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">@ErrorMessage</div>
+}
+else if (IsLoading)
+{
+    <div class="alert alert-info" role="alert">読み込み中...</div>
+}
+else if (CurrentItem is null)
+{
+    <div class="alert alert-warning" role="alert">
+        商品ID: <strong>@ProductPlanningId</strong> のデータが見つかりません。
+    </div>
+}
+else
+{
+    <div class="alert alert-success" role="alert">
+        商品ID: <strong>@CurrentItem.ProductPlanningId</strong>
+    </div>
 
-<div class="card mb-3">
-    <div class="card-header">商品基本情報</div>
-    <div class="card-body">
-        <div class="row g-3">
-            <div class="col-md-4">
-                <label class="form-label">商品ID</label>
-                <input class="form-control" value="@ProductPlanningId" readonly />
-            </div>
-            <div class="col-md-8">
-                <label class="form-label">商品名（正式）</label>
-                <input class="form-control" @bind="EditableProductName" readonly="@(!IsProductNameEditable)" />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">商品区分</label>
-                <input class="form-control" value="健康食品" readonly />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">本発売日</label>
-                <input class="form-control" value="2026/03/01" readonly />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">状態</label>
-                <input class="form-control" value="有効" readonly />
+    <div class="card mb-3">
+        <div class="card-header">商品基本情報</div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">商品ID</label>
+                    <input class="form-control" value="@CurrentItem.ProductPlanningId" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">商品区分</label>
+                    <input class="form-control" value="@CurrentItem.ProductCategory" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">商品担当者</label>
+                    <input class="form-control" value="@CurrentItem.ProductPerson" readonly />
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">正式商品名</label>
+                    <input class="form-control" @bind="EditableProductName" readonly="@(!IsProductNameEditable)" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">読み仮名</label>
+                    <input class="form-control" value="@CurrentItem.ProductNameRuby" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">正式商品名（英表記）</label>
+                    <input class="form-control" value="@CurrentItem.ProductNameOfficialE" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">略称</label>
+                    <input class="form-control" value="@CurrentItem.ProductNameOmit1" readonly />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">お買上票の商品名</label>
+                    <input class="form-control" value="@CurrentItem.ProductNameReceipt" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">発売の状態</label>
+                    <input class="form-control" value="@CurrentItem.ProductReleaseStatus" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">テスト発売日</label>
+                    <input class="form-control" value="@CurrentItem.ProductTestReleaseDate" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">本発売日</label>
+                    <input class="form-control" value="@CurrentItem.ProductReleaseDate" readonly />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">本発売日から</label>
+                    <input class="form-control" value="@CurrentItem.ProductAnniversary" readonly />
+                </div>
+                <div class="col-md-8">
+                    <label class="form-label">リニューアル履歴</label>
+                    <input class="form-control" value="@CurrentItem.ProductRenewalHistory" readonly />
+                </div>
+                <div class="col-12">
+                    <label class="form-label">商標取得一覧</label>
+                    <textarea class="form-control" rows="4" readonly>@CurrentItem.TrademarkAcquisitionList</textarea>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="card">
-    <div class="card-header">メモ</div>
-    <div class="card-body">
-        <textarea class="form-control" rows="4" readonly>ProPlaMain.xaml の編集画面を Web 版で簡略表示しています。</textarea>
-    </div>
-</div>
-
-
-<td>
-    <p>
-    </p><div class="image-wrapper">
-        <img src="
-https://yazuyaoffice.sharepoint.com/:i:/r/sites/yazuya-all/Shared%20Documents/General/01.%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%AF%8E/06.%E5%90%84%E7%A8%AE%E6%92%AE%E5%BD%B1%E3%83%87%E3%83%BC%E3%82%BF/01.%E5%95%86%E5%93%81%E9%96%A2%E9%80%A3/%E9%A4%8A%E7%94%9F%E9%9D%92%E6%B1%81/%E9%9D%92%E6%B1%81%E7%B2%92_%E3%83%AC%E3%82%AE%E3%83%A5%E7%AE%B1%E3%83%91%E3%82%B9%E4%BB%98201405.jpg?csf=1&web=1&e=Qe6aPQ
-">
-    </div>
-</td>
-
-<td>
-    <p>
-        袋
-    </p><div class="image-wrapper">
-        <img src="
-https://yazuyaoffice.sharepoint.com/:i:/r/sites/yazuya-all/Shared%20Documents/General/01.%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%AF%8E/06.%E5%90%84%E7%A8%AE%E6%92%AE%E5%BD%B1%E3%83%87%E3%83%BC%E3%82%BF/01.%E5%95%86%E5%93%81%E9%96%A2%E9%80%A3/%E9%A4%8A%E7%94%9F%E9%9D%92%E6%B1%81/%E9%9D%92%E6%B1%81%E7%B2%92_%E5%B0%8F%E8%A2%8B.jpg?csf=1&web=1&e=dAlFE6
-">
-    </div>
-</td>
-
-<td>
-    <p>
-        粒
-    </p><div class="image-wrapper">
-        <img src="
-https://yazuyaoffice.sharepoint.com/:i:/r/sites/yazuya-all/Shared%20Documents/General/01.%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%AF%8E/06.%E5%90%84%E7%A8%AE%E6%92%AE%E5%BD%B1%E3%83%87%E3%83%BC%E3%82%BF/01.%E5%95%86%E5%93%81%E9%96%A2%E9%80%A3/%E9%A4%8A%E7%94%9F%E9%9D%92%E6%B1%81/%E9%9D%92%E6%B1%81%E7%B2%92_2%E3%83%91%E3%82%B9%E4%BB%98.jpg?csf=1&web=1&e=g4pMMT
-">
-    </div>
-</td>
-
-
+}
 
 @code {
     [Parameter]
     public string ProductPlanningId { get; set; } = string.Empty;
 
+    private bool IsLoading { get; set; }
+
+    private string ErrorMessage { get; set; } = string.Empty;
+
     private bool IsProductNameEditable { get; set; }
 
     private string EditableProductName { get; set; } = string.Empty;
 
-    protected override void OnParametersSet()
+    private ProductPlanning? CurrentItem { get; set; }
+
+    protected override async Task OnParametersSetAsync()
     {
+        IsLoading = true;
+        ErrorMessage = string.Empty;
         IsProductNameEditable = false;
-        EditableProductName = ProductPlanningId switch
+
+        try
         {
-            "PP-0001" => "青汁プレミアム",
-            "PP-0002" => "コラーゲンドリンク",
-            "PP-0003" => "マルチビタミン",
-            _ => "商品名未設定"
-        };
+            CurrentItem = await DbContext.ProductPlannings
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.ProductPlanningId == ProductPlanningId);
+
+            EditableProductName = CurrentItem?.ProductNameOfficial ?? string.Empty;
+        }
+        catch (Exception ex)
+        {
+            CurrentItem = null;
+            EditableProductName = string.Empty;
+            ErrorMessage = $"商品情報の取得でエラーが発生しました: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private void EnableProductNameEdit()
     {
-        IsProductNameEditable = true;
+        IsProductNameEditable = CurrentItem is not null;
     }
-}
+ }
