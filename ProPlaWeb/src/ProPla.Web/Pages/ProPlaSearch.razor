@@ -1,78 +1,152 @@
 @page "/propla/search"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
-@using ProPla.Web.Models.ProPla
-@using ProPla.Web.Services.ProPla
-@inject IProPlaSearchService SearchService
+@using Microsoft.EntityFrameworkCore
+@using ProPla.Web.Data
 @inject NavigationManager Nav
+@inject AppDbContext DbContext
 
-<ProPlaLayout PageTitle="ProPla Search" Title="商品検索・データ出力">
-    <TopLeft>
-        <div class="propla-inline-buttons">
-            <ProPlaButton Text="新規登録" Kind="Primary" />
-            <ProPlaButton Text="戻る" Kind="Primary" Href="/propla/menu" />
+<PageTitle>ProPla Search</PageTitle>
+
+<div class="propla-page">
+    <div class="propla-header">
+        <div class="propla-header-left">
+            <button type="button" class="propla-button" @onclick="CreateNew">新規登録</button>
+            <a class="propla-button" href="/propla/menu">戻る</a>
         </div>
-    </TopLeft>
+        <div class="propla-header-center">
+            <h1 class="propla-title">商品検索・データ出力</h1>
+        </div>
+        <div class="propla-header-right">
+            <button type="button" class="propla-button-primary propla-window-button" aria-label="最小化">－</button>
+        </div>
+    </div>
 
-    <TopRight>
-        <ProPlaButton Text="－" Kind="Primary" AdditionalClass="propla-window-button" />
-    </TopRight>
+    <div class="propla-panel" style="margin-bottom:16px;">
+        <div class="propla-search-toolbar">
+            <button type="button" class="propla-button">全選択</button>
+            <button type="button" class="propla-button">全解除</button>
 
-    <Toolbar>
-        <ProPlaToolbar SelectedOutputType="@SelectedOutputType"
-                       SelectedOutputTypeChanged="@OnSelectedOutputTypeChanged"
-                       OnExport="@ExportAsync" />
-    </Toolbar>
+            <label for="outputType" style="margin-left:18px;">出力種別</label>
+            <select id="outputType" class="propla-select" style="min-width:250px;">
+                <option value=""></option>
+            </select>
 
-    <MainContent>
-        <ProPlaSearchPanel Keyword="@Condition.Keyword"
-                           KeywordChanged="@OnKeywordChanged"
-                           SelectedStatus="@Condition.Status"
-                           SelectedStatusChanged="@OnStatusChanged"
-                           StatusOptions="@StatusOptions"
-                           Disabled="@IsLoading"
-                           OnSearch="@SearchAsync" />
+            <button type="button" class="propla-button">項目選択</button>
+            <button type="button" class="propla-button">選択保存</button>
+            <button type="button" class="propla-button">選択読込</button>
+            <button type="button" class="propla-button-accent">出力</button>
+        </div>
+    </div>
 
-        <ProPlaMessageArea IsLoading="@IsLoading" ErrorMessage="@ErrorMessage" SuccessMessage="@SuccessMessage" />
+    <div class="propla-panel" style="margin-bottom:16px;">
+        <div class="propla-search-row">
+            <label for="keyword">キーワード</label>
+            <input id="keyword" class="propla-input" style="width:250px;" @bind="keyword" />
 
-        <ProPlaDataTable Items="@Items" OnSelect="@SelectItem" />
-    </MainContent>
-</ProPlaLayout>
+            <label for="status" style="margin-left:18px;">状態</label>
+            <select id="status" class="propla-select" style="width:220px;" @bind="selectedStatus">
+                <option value="">すべて</option>
+                @foreach (var status in StatusOptions)
+                {
+                    <option value="@status">@status</option>
+                }
+            </select>
+
+            <button type="button" class="propla-button-primary" @onclick="Search" disabled="@IsLoading">検索</button>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+    {
+        <div class="propla-panel propla-message-area" style="margin-bottom:16px;">@ErrorMessage</div>
+    }
+
+    @if (IsLoading)
+    {
+        <div class="propla-panel propla-message-area">読み込み中...</div>
+    }
+    else
+    {
+        <div class="propla-panel propla-table-panel">
+            <table class="propla-table">
+                <thead>
+                    <tr>
+                        <th>選択</th>
+                        <th>商品ID</th>
+                        <th>商品区分</th>
+                        <th>商品担当者</th>
+                        <th>正式商品名</th>
+                        <th>状態</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (FilteredItems.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="6" class="propla-table-empty">データがありません。</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in FilteredItems)
+                        {
+                            <tr>
+                                <td>
+                                    <button type="button" class="propla-button-primary propla-button-small" @onclick="(() => SelectItem(item.ProductPlanningId))">選択</button>
+                                </td>
+                                <td>@item.ProductPlanningId</td>
+                                <td>@item.ProductCategory</td>
+                                <td>@item.ProductPerson</td>
+                                <td>@item.ProductNameOfficial</td>
+                                <td>@item.ProductReleaseStatus</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
 
 @code {
-    private ProPlaSearchCondition Condition { get; set; } = new();
-    private List<string> StatusOptions { get; set; } = new();
-    private List<ProPlaSearchResultRow> Items { get; set; } = new();
+    private string keyword = string.Empty;
+    private string selectedStatus = string.Empty;
     private bool IsLoading { get; set; }
     private string ErrorMessage { get; set; } = string.Empty;
-    private string SuccessMessage { get; set; } = string.Empty;
-    private string SelectedOutputType { get; set; } = string.Empty;
+    private List<ProductPlanning> AllItems { get; set; } = new();
+    private List<ProductPlanning> FilteredItems { get; set; } = new();
+    private List<string> StatusOptions { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAsync();
-    }
-
-    private async Task LoadAsync()
-    {
         IsLoading = true;
         ErrorMessage = string.Empty;
-        SuccessMessage = string.Empty;
 
         try
         {
-            StatusOptions = await SearchService.GetStatusOptionsAsync();
-            if (!StatusOptions.Contains(Condition.Status))
-            {
-                Condition.Status = string.Empty;
-            }
-            Items = await SearchService.SearchAsync(Condition);
+            AllItems = await DbContext.ProductPlannings
+                .AsNoTracking()
+                .OrderBy(x => x.ProductPlanningId)
+                .ToListAsync();
+
+            StatusOptions = AllItems
+                .Select(x => x.ProductReleaseStatus)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct()
+                .OrderBy(x => x)
+                .Cast<string>()
+                .ToList();
+
+            selectedStatus = StatusOptions.Contains("本発売中") ? "本発売中" : string.Empty;
+            Search();
         }
         catch (Exception ex)
         {
+            AllItems = new List<ProductPlanning>();
+            FilteredItems = new List<ProductPlanning>();
+            StatusOptions = new List<string>();
             ErrorMessage = $"商品一覧の取得でエラーが発生しました: {ex.Message}";
-            Items = new();
-            StatusOptions = new();
         }
         finally
         {
@@ -80,56 +154,34 @@
         }
     }
 
-    private async Task SearchAsync()
+    private void Search()
     {
-        IsLoading = true;
-        ErrorMessage = string.Empty;
-        SuccessMessage = string.Empty;
+        IEnumerable<ProductPlanning> query = AllItems;
 
-        try
+        if (!string.IsNullOrWhiteSpace(selectedStatus))
         {
-            Items = await SearchService.SearchAsync(Condition);
-            SuccessMessage = $"{Items.Count} 件取得しました。";
+            query = query.Where(x => string.Equals(x.ProductReleaseStatus, selectedStatus, StringComparison.OrdinalIgnoreCase));
         }
-        catch (Exception ex)
+
+        if (!string.IsNullOrWhiteSpace(keyword))
         {
-            ErrorMessage = $"検索でエラーが発生しました: {ex.Message}";
-            Items = new();
+            query = query.Where(x => (x.ProductPlanningId ?? string.Empty).Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                     || (x.ProductCategory ?? string.Empty).Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                     || (x.ProductPerson ?? string.Empty).Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                     || (x.ProductNameOfficial ?? string.Empty).Contains(keyword, StringComparison.OrdinalIgnoreCase)
+                                     || (x.ProductReleaseStatus ?? string.Empty).Contains(keyword, StringComparison.OrdinalIgnoreCase));
         }
-        finally
-        {
-            IsLoading = false;
-        }
+
+        FilteredItems = query.ToList();
     }
 
-    private Task OnKeywordChanged(string value)
+    private void SelectItem(string id)
     {
-        Condition.Keyword = value;
-        return Task.CompletedTask;
+        Nav.NavigateTo($"/propla/main/{id}");
     }
 
-    private Task OnStatusChanged(string value)
+    private void CreateNew()
     {
-        Condition.Status = value;
-        return Task.CompletedTask;
-    }
-
-    private Task OnSelectedOutputTypeChanged(string value)
-    {
-        SelectedOutputType = value;
-        return Task.CompletedTask;
-    }
-
-    private Task ExportAsync()
-    {
-        SuccessMessage = string.IsNullOrWhiteSpace(SelectedOutputType)
-            ? "出力種別を選択してください。"
-            : $"{SelectedOutputType} 出力はこれから実装できます。";
-        return Task.CompletedTask;
-    }
-
-    private void SelectItem(string productCode)
-    {
-        Nav.NavigateTo($"/propla/main/{productCode}");
+        Nav.NavigateTo("/propla/main");
     }
 }

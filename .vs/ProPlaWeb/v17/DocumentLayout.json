@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{9E8A8019-F555-4C3C-815A-9E184A8E4105}|ProPlaWeb\\src\\ProPla.Web\\ProPla.Web.csproj|solutionrelative:proplaweb\\src\\propla.web\\pages\\menu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{9E8A8019-F555-4C3C-815A-9E184A8E4105}|ProPlaWeb\\src\\ProPla.Web\\ProPla.Web.csproj|c:\\01.pg\\00.yzyts\\yzyts030\\proplaweb\\src\\propla.web\\wwwroot\\css\\propla-common.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{9E8A8019-F555-4C3C-815A-9E184A8E4105}|ProPlaWeb\\src\\ProPla.Web\\ProPla.Web.csproj|solutionrelative:proplaweb\\src\\propla.web\\wwwroot\\css\\propla-common.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{9E8A8019-F555-4C3C-815A-9E184A8E4105}|ProPlaWeb\\src\\ProPla.Web\\ProPla.Web.csproj|c:\\01.pg\\00.yzyts\\yzyts030\\proplaweb\\src\\propla.web\\pages\\proplamain.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{9E8A8019-F555-4C3C-815A-9E184A8E4105}|ProPlaWeb\\src\\ProPla.Web\\ProPla.Web.csproj|solutionrelative:proplaweb\\src\\propla.web\\pages\\proplamain.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -50,11 +54,49 @@
       "DocumentGroups": [
         {
           "DockedWidth": 59,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
+              "Title": "Menu.razor",
+              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor",
+              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor",
+              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor*",
+              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor*",
+              "ViewState": "AQIAACcAAAAAAAAAAAAAADkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T02:12:15.695Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
+              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
+              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
+              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAABnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-13T01:22:48.6Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProPlaSearch.razor",
+              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
+              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
+              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
+              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
+              "ViewState": "AQIAAJwAAAAAAAAAAAAAwLsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T01:19:01.572Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "_Imports.razor",
               "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\_Imports.razor",
               "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\_Imports.razor",
@@ -67,20 +109,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ProPlaLayout.razor",
-              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
-              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
-              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
-              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACYAAAABAAAA",
+              "DocumentIndex": 2,
+              "Title": "ProPlaMain.razor",
+              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
+              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
+              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
+              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAAAJcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-13T04:52:32.256Z",
+              "WhenOpened": "2026-03-11T08:52:42.179Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
+              "Title": "propla-common.css",
+              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\propla-common.css",
+              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\propla-common.css",
+              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\propla-common.css*",
+              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\propla-common.css*",
+              "ViewState": "AQIAAA8BAAAAAAAAAAAcwCsBAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-03-13T06:10:37.431Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "_Host.cshtml",
               "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\_Host.cshtml",
               "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Pages\\_Host.cshtml",
@@ -93,58 +148,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Menu.razor",
-              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor",
-              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor",
-              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor",
-              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Pages\\Menu.razor",
-              "ViewState": "AQIAABoAAAAAAAAAAADwvx4AAAAGAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-13T02:12:15.695Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
-              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
-              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
-              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAABnAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-13T01:22:48.6Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ProPlaSearch.razor",
-              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
-              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
-              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
-              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaSearch.razor",
-              "ViewState": "AQIAACUAAAAAAAAAAADwvygAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-13T01:19:01.572Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ProPlaMain.razor",
-              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
-              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
-              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
-              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Pages\\ProPlaMain.razor",
-              "ViewState": "AQIAAEoAAAAAAAAAAADwv1cAAAAIAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-11T08:52:42.179Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "ProPlaLayout.razor",
+              "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
+              "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
+              "ToolTip": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
+              "RelativeToolTip": "ProPlaWeb\\src\\ProPla.Web\\Shared\\ProPlaLayout.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACYAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T04:52:32.256Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "ProPlaDataTable.razor",
               "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Components\\ProPla\\ProPlaDataTable.razor",
               "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Components\\ProPla\\ProPlaDataTable.razor",
@@ -157,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Data\\AppDbContext.cs",
@@ -169,7 +186,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ApplicationUser.cs",
               "DocumentMoniker": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\Data\\ApplicationUser.cs",
               "RelativeDocumentMoniker": "ProPlaWeb\\src\\ProPla.Web\\Data\\ApplicationUser.cs",

@@ -15,13 +15,19 @@
         </div>
     </TopLeft>
 
+    <TopRight>
+        <ProPlaButton Text="－" Kind="Primary" AdditionalClass="propla-window-button" />
+    </TopRight>
+
     <MainContent>
         <ProPlaMessageArea IsLoading="@IsLoading" ErrorMessage="@ErrorMessage" SuccessMessage="@SuccessMessage" />
 
         @if (!IsLoading && string.IsNullOrWhiteSpace(ErrorMessage) && CurrentItem is null)
         {
-            <div class="propla-message propla-message-info">
-                商品ID: <strong>@ProductPlanningId</strong> のデータが見つかりません。
+            <div class="propla-panel">
+                <div class="propla-message propla-message-info">
+                    商品ID: <strong>@ProductPlanningId</strong> のデータが見つかりません。
+                </div>
             </div>
         }
         else if (CurrentItem is not null)
@@ -40,10 +46,12 @@
                         <label class="propla-label">商品担当者</label>
                         <input class="propla-input" value="@CurrentItem.ProductPerson" readonly />
                     </div>
+
                     <div class="propla-field-span-3">
                         <label class="propla-label">正式商品名</label>
                         <input class="propla-input" @bind="EditableProductName" readonly="@(!IsProductNameEditable)" />
                     </div>
+
                     <div>
                         <label class="propla-label">読み仮名</label>
                         <input class="propla-input" value="@CurrentItem.ProductNameRuby" readonly />
