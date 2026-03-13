@@ -1,0 +1,256 @@
+.propla-page {
+    background-color: #b9d8c6;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: "Segoe UI", "Meiryo", sans-serif;
+}
+
+.propla-layout-shell {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.propla-layout-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    margin-bottom: 18px;
+    gap: 12px;
+}
+
+.propla-layout-header-left,
+.propla-layout-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+}
+
+.propla-layout-header-right {
+    justify-content: flex-end;
+}
+
+.propla-layout-header-center {
+    display: flex;
+    justify-content: center;
+}
+
+.propla-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1b4fa3;
+    margin: 0;
+}
+
+.propla-panel {
+    background-color: #cfe5d8;
+    border-radius: 8px;
+    border: 1px solid #9fbfb0;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.propla-toolbar-panel {
+    margin-bottom: 18px;
+}
+
+.propla-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    background: linear-gradient(#9fc4e8, #6ea2d3);
+    color: #000;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.propla-button:hover {
+    opacity: 0.95;
+}
+
+.propla-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.propla-button-primary {
+    background: linear-gradient(#8ab5e0, #5f8fc7);
+    color: #000;
+}
+
+.propla-button-accent {
+    background: linear-gradient(#1e4fa5, #4f83c8);
+    color: #fff;
+}
+
+.propla-button-small {
+    min-width: 80px;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.propla-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.propla-grid-2 > div .propla-button,
+.propla-grid-2 > div button {
+    width: 100%;
+    min-height: 58px;
+}
+
+.propla-search-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.propla-search-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.propla-input,
+.propla-select,
+.propla-textarea {
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 4px;
+    border: 1px solid #888;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.propla-input {
+    min-width: 180px;
+}
+
+.propla-select {
+    min-width: 160px;
+}
+
+.propla-label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.propla-help-text {
+    margin-top: 10px;
+    color: #335c4b;
+    font-size: 14px;
+}
+
+.propla-inline-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.propla-window-button {
+    min-width: 56px;
+}
+
+.propla-message {
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+}
+
+.propla-message-info {
+    background-color: #e8f2ff;
+    border-color: #9ab9ea;
+}
+
+.propla-message-success {
+    background-color: #e7f6ea;
+    border-color: #92c39b;
+}
+
+.propla-message-error {
+    background-color: #fdeaea;
+    border-color: #dd9c9c;
+}
+
+.propla-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1b4fa3;
+    margin-bottom: 16px;
+}
+
+.propla-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.propla-field-span-2 {
+    grid-column: span 2;
+}
+
+.propla-field-span-3 {
+    grid-column: span 3;
+}
+
+.propla-table-panel {
+    overflow-x: auto;
+}
+
+.propla-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.propla-table th,
+.propla-table td {
+    border: 1px solid #9fbfb0;
+    padding: 10px 12px;
+    vertical-align: middle;
+}
+
+.propla-table thead th {
+    background-color: #d9ebff;
+    text-align: left;
+}
+
+.propla-table-empty {
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .propla-layout-header {
+        grid-template-columns: 1fr;
+    }
+
+    .propla-layout-header-left,
+    .propla-layout-header-right,
+    .propla-layout-header-center {
+        justify-content: center;
+    }
+
+    .propla-grid-2,
+    .propla-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .propla-field-span-2,
+    .propla-field-span-3 {
+        grid-column: span 1;
+    }
+}

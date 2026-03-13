@@ -1,0 +1,39 @@
+<div class="propla-page">
+    <PageTitle>@PageTitle</PageTitle>
+
+    <div class="propla-header">
+        <div class="propla-header-left">
+            @TopLeft
+        </div>
+
+        <div class="propla-header-center">
+            <h1 class="propla-title">@Title</h1>
+        </div>
+
+        <div class="propla-header-right">
+            @TopRight
+        </div>
+    </div>
+
+    @if (Toolbar is not null)
+    {
+        <div class="propla-panel">
+            @Toolbar
+        </div>
+    }
+
+    <div class="propla-body">
+        @MainContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public string PageTitle { get; set; } = "ProPla";
+    [Parameter] public string Title { get; set; } = string.Empty;
+
+    [Parameter] public RenderFragment? TopLeft { get; set; }
+    [Parameter] public RenderFragment? TopRight { get; set; }
+    [Parameter] public RenderFragment? Toolbar { get; set; }
+
+    [Parameter] public RenderFragment? MainContent { get; set; }
+}

@@ -1,0 +1,42 @@
+<div class="propla-panel">
+    <div class="propla-search-row">
+        <label class="propla-label" for="@KeywordId">キーワード</label>
+        <input id="@KeywordId" class="propla-input" value="@Keyword" @oninput="HandleKeywordChanged" />
+
+        <label class="propla-label" for="@StatusId">状態</label>
+        <select id="@StatusId" class="propla-select" value="@SelectedStatus" @onchange="HandleStatusChanged">
+            <option value="">すべて</option>
+            @foreach (var status in StatusOptions)
+            {
+                <option value="@status">@status</option>
+            }
+        </select>
+
+        <ProPlaButton Text="検索" Kind="Primary" OnClick="OnSearch" Disabled="@Disabled" />
+    </div>
+</div>
+
+@code {
+    private readonly string KeywordId = $"keyword_{Guid.NewGuid():N}";
+    private readonly string StatusId = $"status_{Guid.NewGuid():N}";
+
+    [Parameter] public string Keyword { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> KeywordChanged { get; set; }
+    [Parameter] public string SelectedStatus { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> SelectedStatusChanged { get; set; }
+    [Parameter] public IEnumerable<string> StatusOptions { get; set; } = Enumerable.Empty<string>();
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public EventCallback OnSearch { get; set; }
+
+    private async Task HandleKeywordChanged(ChangeEventArgs e)
+    {
+        Keyword = e.Value?.ToString() ?? string.Empty;
+        await KeywordChanged.InvokeAsync(Keyword);
+    }
+
+    private async Task HandleStatusChanged(ChangeEventArgs e)
+    {
+        SelectedStatus = e.Value?.ToString() ?? string.Empty;
+        await SelectedStatusChanged.InvokeAsync(SelectedStatus);
+    }
+}

@@ -1,134 +1,120 @@
- @page "/propla/main/{ProductPlanningId}"
+@page "/propla/main/{ProductPlanningId}"
 @attribute [Authorize]
- @using Microsoft.AspNetCore.Authorization
- @using Microsoft.EntityFrameworkCore
- @using ProPla.Web.Data
- @inject AppDbContext DbContext
+@using Microsoft.AspNetCore.Authorization
+@using ProPla.Web.Data
+@using ProPla.Web.Services.ProPla
+@inject IProPlaMasterService MasterService
 
-<PageTitle>ProPla Main</PageTitle>
-
-<h1>商品情報マスタ（詳細）</h1>
-
-
-<div class="d-flex gap-2 mb-3">
-    <button class="btn btn-secondary">更新許可</button>
-    <button class="btn btn-primary" @onclick="EnableProductNameEdit" disabled="@(CurrentItem is null)">更新</button>
-    <button class="btn btn-outline-primary" disabled>引用</button>
-    <a class="btn btn-outline-secondary" href="/propla/search">戻る</a>
-</div>
-
- @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-{
-    <div class="alert alert-danger" role="alert">@ErrorMessage</div>
-}
-else if (IsLoading)
-{
-    <div class="alert alert-info" role="alert">読み込み中...</div>
-}
-else if (CurrentItem is null)
-{
-    <div class="alert alert-warning" role="alert">
-        商品ID: <strong>@ProductPlanningId</strong> のデータが見つかりません。
-    </div>
-}
-else
-{
-    <div class="alert alert-success" role="alert">
-        商品ID: <strong>@CurrentItem.ProductPlanningId</strong>
-    </div>
-
-    <div class="card mb-3">
-        <div class="card-header">商品基本情報</div>
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">商品ID</label>
-                    <input class="form-control" value="@CurrentItem.ProductPlanningId" readonly />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">商品区分</label>
-                    <input class="form-control" value="@CurrentItem.ProductCategory" readonly />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">商品担当者</label>
-                    <input class="form-control" value="@CurrentItem.ProductPerson" readonly />
-                </div>
-                <div class="col-md-12">
-                    <label class="form-label">正式商品名</label>
-                    <input class="form-control" @bind="EditableProductName" readonly="@(!IsProductNameEditable)" />
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">読み仮名</label>
-                    <input class="form-control" value="@CurrentItem.ProductNameRuby" readonly />
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">正式商品名（英表記）</label>
-                    <input class="form-control" value="@CurrentItem.ProductNameOfficialE" readonly />
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">略称</label>
-                    <input class="form-control" value="@CurrentItem.ProductNameOmit1" readonly />
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">お買上票の商品名</label>
-                    <input class="form-control" value="@CurrentItem.ProductNameReceipt" readonly />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">発売の状態</label>
-                    <input class="form-control" value="@CurrentItem.ProductReleaseStatus" readonly />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">テスト発売日</label>
-                    <input class="form-control" value="@CurrentItem.ProductTestReleaseDate" readonly />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">本発売日</label>
-                    <input class="form-control" value="@CurrentItem.ProductReleaseDate" readonly />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">本発売日から</label>
-                    <input class="form-control" value="@CurrentItem.ProductAnniversary" readonly />
-                </div>
-                <div class="col-md-8">
-                    <label class="form-label">リニューアル履歴</label>
-                    <input class="form-control" value="@CurrentItem.ProductRenewalHistory" readonly />
-                </div>
-                <div class="col-12">
-                    <label class="form-label">商標取得一覧</label>
-                    <textarea class="form-control" rows="4" readonly>@CurrentItem.TrademarkAcquisitionList</textarea>
-                </div>
-            </div>
+<ProPlaLayout PageTitle="ProPla Main" Title="商品情報マスタ（詳細）">
+    <TopLeft>
+        <div class="propla-inline-buttons">
+            <ProPlaButton Text="更新許可" Kind="Primary" OnClick="@AllowUpdate" />
+            <ProPlaButton Text="更新" Kind="Accent" Disabled="@(CurrentItem is null)" OnClick="@EnableProductNameEdit" />
+            <ProPlaButton Text="引用" Disabled="true" />
+            <ProPlaButton Text="戻る" Kind="Primary" Href="/propla/search" />
         </div>
-    </div>
-}
+    </TopLeft>
+
+    <MainContent>
+        <ProPlaMessageArea IsLoading="@IsLoading" ErrorMessage="@ErrorMessage" SuccessMessage="@SuccessMessage" />
+
+        @if (!IsLoading && string.IsNullOrWhiteSpace(ErrorMessage) && CurrentItem is null)
+        {
+            <div class="propla-message propla-message-info">
+                商品ID: <strong>@ProductPlanningId</strong> のデータが見つかりません。
+            </div>
+        }
+        else if (CurrentItem is not null)
+        {
+            <ProPlaSection Title="商品基本情報">
+                <div class="propla-form-grid">
+                    <div>
+                        <label class="propla-label">商品ID</label>
+                        <input class="propla-input" value="@CurrentItem.ProductPlanningId" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">商品区分</label>
+                        <input class="propla-input" value="@CurrentItem.ProductCategory" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">商品担当者</label>
+                        <input class="propla-input" value="@CurrentItem.ProductPerson" readonly />
+                    </div>
+                    <div class="propla-field-span-3">
+                        <label class="propla-label">正式商品名</label>
+                        <input class="propla-input" @bind="EditableProductName" readonly="@(!IsProductNameEditable)" />
+                    </div>
+                    <div>
+                        <label class="propla-label">読み仮名</label>
+                        <input class="propla-input" value="@CurrentItem.ProductNameRuby" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">正式商品名（英表記）</label>
+                        <input class="propla-input" value="@CurrentItem.ProductNameOfficialE" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">略称</label>
+                        <input class="propla-input" value="@CurrentItem.ProductNameOmit1" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">お買上票の商品名</label>
+                        <input class="propla-input" value="@CurrentItem.ProductNameReceipt" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">発売の状態</label>
+                        <input class="propla-input" value="@CurrentItem.ProductReleaseStatus" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">テスト発売日</label>
+                        <input class="propla-input" value="@CurrentItem.ProductTestReleaseDate" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">本発売日</label>
+                        <input class="propla-input" value="@CurrentItem.ProductReleaseDate" readonly />
+                    </div>
+                    <div>
+                        <label class="propla-label">本発売日から</label>
+                        <input class="propla-input" value="@CurrentItem.ProductAnniversary" readonly />
+                    </div>
+                    <div class="propla-field-span-2">
+                        <label class="propla-label">リニューアル履歴</label>
+                        <input class="propla-input" value="@CurrentItem.ProductRenewalHistory" readonly />
+                    </div>
+                    <div class="propla-field-span-3">
+                        <label class="propla-label">商標取得一覧</label>
+                        <textarea class="propla-textarea" rows="4" readonly>@CurrentItem.TrademarkAcquisitionList</textarea>
+                    </div>
+                </div>
+            </ProPlaSection>
+        }
+    </MainContent>
+</ProPlaLayout>
 
 @code {
-    [Parameter]
-    public string ProductPlanningId { get; set; } = string.Empty;
+    [Parameter] public string ProductPlanningId { get; set; } = string.Empty;
 
     private bool IsLoading { get; set; }
-
     private string ErrorMessage { get; set; } = string.Empty;
-
+    private string SuccessMessage { get; set; } = string.Empty;
     private bool IsProductNameEditable { get; set; }
-
     private string EditableProductName { get; set; } = string.Empty;
-
     private ProductPlanning? CurrentItem { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
         IsLoading = true;
         ErrorMessage = string.Empty;
+        SuccessMessage = string.Empty;
         IsProductNameEditable = false;
 
         try
         {
-            CurrentItem = await DbContext.ProductPlannings
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.ProductPlanningId == ProductPlanningId);
-
+            CurrentItem = await MasterService.GetByIdAsync(ProductPlanningId);
             EditableProductName = CurrentItem?.ProductNameOfficial ?? string.Empty;
+            if (CurrentItem is not null)
+            {
+                SuccessMessage = $"商品ID: {CurrentItem.ProductPlanningId}";
+            }
         }
         catch (Exception ex)
         {
@@ -142,8 +128,16 @@ else
         }
     }
 
-    private void EnableProductNameEdit()
+    private Task AllowUpdate()
+    {
+        SuccessMessage = "更新許可を有効にする処理をここへ実装します。";
+        return Task.CompletedTask;
+    }
+
+    private Task EnableProductNameEdit()
     {
         IsProductNameEditable = CurrentItem is not null;
+        SuccessMessage = IsProductNameEditable ? "正式商品名を編集できます。" : string.Empty;
+        return Task.CompletedTask;
     }
- }
+}

@@ -1,0 +1,12 @@
+<div class="propla-panel">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <div class="propla-section-title">@Title</div>
+    }
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -49,6 +49,10 @@
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
+      "Id": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\propla-common.css",
+      "PackagePath": "staticwebassets\\css\\propla-common.css"
+    },
+    {
       "Id": "C:\\01.PG\\00.YzyTs\\YzyTs030\\ProPlaWeb\\src\\ProPla.Web\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

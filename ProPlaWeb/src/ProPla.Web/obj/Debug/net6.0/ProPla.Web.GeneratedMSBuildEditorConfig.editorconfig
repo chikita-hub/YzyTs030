@@ -22,6 +22,30 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/01.PG/00.YzyTs/YzyTs030/ProPlaWeb/src/ProPla.Web/Components/ProPla/ProPlaButton.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9QbGFcUHJvUGxhQnV0dG9uLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/01.PG/00.YzyTs/YzyTs030/ProPlaWeb/src/ProPla.Web/Components/ProPla/ProPlaDataTable.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9QbGFcUHJvUGxhRGF0YVRhYmxlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/01.PG/00.YzyTs/YzyTs030/ProPlaWeb/src/ProPla.Web/Components/ProPla/ProPlaMessageArea.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9QbGFcUHJvUGxhTWVzc2FnZUFyZWEucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/01.PG/00.YzyTs/YzyTs030/ProPlaWeb/src/ProPla.Web/Components/ProPla/ProPlaSearchPanel.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9QbGFcUHJvUGxhU2VhcmNoUGFuZWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/01.PG/00.YzyTs/YzyTs030/ProPlaWeb/src/ProPla.Web/Components/ProPla/ProPlaSection.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9QbGFcUHJvUGxhU2VjdGlvbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/01.PG/00.YzyTs/YzyTs030/ProPlaWeb/src/ProPla.Web/Components/ProPla/ProPlaToolbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQcm9QbGFcUHJvUGxhVG9vbGJhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/01.PG/00.YzyTs/YzyTs030/ProPlaWeb/src/ProPla.Web/Pages/Auth/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dpbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

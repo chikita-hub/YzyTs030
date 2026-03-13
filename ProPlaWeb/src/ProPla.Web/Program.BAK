@@ -42,7 +42,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
-// ---- ‰Šúadminƒ†[ƒU[seed ----
+// ---- åˆæœŸadminãƒ¦ãƒ¼ã‚¶ãƒ¼seed ----
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -98,7 +98,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();    // © •û®A‚Å•K{
+app.MapRazorPages();    // â† æ–¹å¼Aã§å¿…é ˆ
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 

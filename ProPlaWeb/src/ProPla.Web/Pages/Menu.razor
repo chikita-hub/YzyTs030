@@ -1,47 +1,50 @@
 @page "/propla/menu"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
+@using ProPla.Web.Models.ProPla
 
-<PageTitle>ProPla Menu</PageTitle>
+<ProPlaLayout PageTitle="ProPla Menu" Title="商品情報マスタ">
+    <TopRight>
+        <ProPlaButton Text="－" Kind="Primary" AdditionalClass="propla-window-button" />
+    </TopRight>
 
-<h1>商品情報マスタ</h1>
-
-<div class="row g-3 mt-1">
-    @foreach (var item in MenuItems)
-    {
-        <div class="col-12 col-md-6">
-            @if (!item.IsEnabled)
+    <MainContent>
+        <div class="propla-grid-2">
+            @foreach (var item in MenuItems)
             {
-                <button class="btn btn-secondary w-100 py-3" disabled>@item.Label</button>
-            }
-            else if (item.IsExternal)
-            {
-                <a class="btn btn-primary w-100 py-3" href="@item.Url" target="_blank" rel="noopener noreferrer">@item.Label</a>
-            }
-            else
-            {
-                <a class="btn btn-primary w-100 py-3" href="@item.Url">@item.Label</a>
+                <div>
+                    @if (!item.IsEnabled)
+                    {
+                        <button class="propla-button" disabled>@item.Label</button>
+                    }
+                    else
+                    {
+                        <ProPlaButton Text="@item.Label"
+                                      Kind="@item.ButtonKind"
+                                      Href="@item.Url"
+                                      Target="@(item.IsExternal ? "_blank" : null)"
+                                      Rel="@(item.IsExternal ? "noopener noreferrer" : null)" />
+                    }
+                </div>
             }
         </div>
-    }
-</div>
+    </MainContent>
+</ProPlaLayout>
 
 @code {
-    private static readonly IReadOnlyList<MenuItem> MenuItems = new List<MenuItem>
+    private static readonly IReadOnlyList<ProPlaMenuItem> MenuItems = new List<ProPlaMenuItem>
     {
-        new("商品検索・データ出力", "/propla/search", false, true),
-        new("法律関係リンク", "https://yazuyaoffice.sharepoint.com/:x:/r/sites/yazuya-all/Shared%20Documents/General/01.%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E6%AF%8E/05.%E6%B3%95%E5%BE%8B%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E9%96%A2%E9%80%A3/%E9%96%A2%E9%80%A3%E6%B3%95%E5%BE%8B%E4%B8%80%E8%A6%A7%EF%BC%88%E3%83%AA%E3%83%B3%E3%82%AF%EF%BC%89.xlsx?d=w4be31b361c634526847eb0a6a49a2459&csf=1&web=1&e=ZJoiUd", true, true),
-        new("使い方ガイド", "https://yazuyaoffice.sharepoint.com/:x:/r/sites/yazuya-all/Shared%20Documents/General/02.%E9%83%A8%E7%BD%B2%E6%AF%8E/%E5%95%86%E5%93%81%E4%BC%81%E7%94%BB/01%E3%80%80%E5%95%86%E5%93%81%E6%83%85%E5%A0%B1/%E5%95%86%E5%93%81%E3%83%9E%E3%82%B9%E3%82%BF/%E4%BD%BF%E3%81%84%E6%96%B9%E3%82%AC%E3%82%A4%E3%83%89.xlsx?d=we61499ebbb784bfc8cab234fea990407&csf=1&web=1&e=NHQqeb", true, true),
-        new("各種リンク先一覧", "https://yazuyaoffice.sharepoint.com/:x:/r/sites/yazuya-all/Shared%20Documents/General/02.%E9%83%A8%E7%BD%B2%E6%AF%8E/%E5%95%86%E5%93%81%E4%BC%81%E7%94%BB/01%E3%80%80%E5%95%86%E5%93%81%E6%83%85%E5%A0%B1/%E5%95%86%E5%93%81%E3%83%9E%E3%82%B9%E3%82%BF/%E5%90%84%E7%A8%AE%E3%83%AA%E3%83%B3%E3%82%AF%E5%85%88%E4%B8%80%E8%A6%A7.xlsx?d=w1afc87d72db8485290e532421148a484&csf=1&web=1&e=t4NDlh", true, true),
-        new("パスワード変更", "/Account/Login", false, true),
-        new("【キセキ専用】各種リンク先一覧", "https://yazuyaoffice.sharepoint.com/:x:/r/sites/yazuya-all/_layouts/15/Doc.aspx?sourcedoc=%7B90BA7F9F-09E1-403E-B5C9-21C3142753ED%7D&file=%25u3010%25u30ad%25u30bb%25u30ad%25u5c02%25u7528%25u3011%25u5404%25u7a2e%25u30ea%25u30f3%25u30af%25u5148%25u4e00%25u89a7.xlsx&action=default&mobileredirect=true", true, true),
-        new("表示履歴", "/fetchdata", false, true),
-        new("【商品企画室専用】各種リンク先一覧", "https://yazuyaoffice.sharepoint.com/:x:/r/sites/yazuya-ki/Shared%20Documents/General/18.%E5%90%84%E7%A8%AE%E3%83%9E%E3%83%8B%E3%83%A5%E3%82%A2%E3%83%AB/00%E3%80%80%E5%90%84%E7%A8%AE%E3%83%AA%E3%83%B3%E3%82%AF%E5%85%88/%E5%90%84%E7%A8%AE%E3%83%AA%E3%83%B3%E3%82%AF%E5%85%88%E4%B8%80%E8%A6%A7.xlsx?d=w7dd1ea9016f648eca05f2dbac34bd976&csf=1&web=1&e=Xo7Rfc", true, true),
-        new("ユーザマスタ", "/", false, true),
-        new("区分マスタ", "/", false, true),
-        new("（未使用）", "", false, false),
-        new("ログアウト", "/Account/Login", false, true)
+        new() { Label = "商品検索・データ出力", Url = "/propla/search", ButtonKind = "Normal" },
+        new() { Label = "法律関係リンク", Url = "https://yazuyaoffice.sharepoint.com/", IsExternal = true },
+        new() { Label = "使い方ガイド", Url = "https://yazuyaoffice.sharepoint.com/", IsExternal = true },
+        new() { Label = "各種リンク先一覧", Url = "https://yazuyaoffice.sharepoint.com/", IsExternal = true },
+        new() { Label = "パスワード変更", Url = "/Account/Login", ButtonKind = "Accent" },
+        new() { Label = "【キセキ専用】各種リンク先一覧", Url = "https://yazuyaoffice.sharepoint.com/", IsExternal = true },
+        new() { Label = "表示履歴", Url = "/fetchdata", ButtonKind = "Accent" },
+        new() { Label = "【商品企画室専用】各種リンク先一覧", Url = "https://yazuyaoffice.sharepoint.com/", IsExternal = true },
+        new() { Label = "ユーザマスタ", Url = "/", IsEnabled = false },
+        new() { Label = "区分マスタ", Url = "/", IsEnabled = false },
+        new() { Label = "（未使用）", Url = string.Empty, IsEnabled = false },
+        new() { Label = "ログアウト", Url = "/Account/Login", ButtonKind = "Accent" }
     };
-
-    private sealed record MenuItem(string Label, string Url, bool IsExternal, bool IsEnabled);
 }

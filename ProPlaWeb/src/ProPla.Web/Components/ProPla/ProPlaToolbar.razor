@@ -1,0 +1,44 @@
+<div class="propla-search-toolbar">
+    <ProPlaButton Text="全選択" OnClick="OnSelectAll" />
+    <ProPlaButton Text="全解除" OnClick="OnClearAll" />
+
+    <label class="propla-label" for="@SelectId">出力種別</label>
+    <select id="@SelectId" class="propla-select" value="@SelectedOutputType" @onchange="HandleOutputTypeChanged">
+        <option value=""></option>
+        @foreach (var option in OutputTypes)
+        {
+            <option value="@option">@option</option>
+        }
+    </select>
+
+    <ProPlaButton Text="項目選択" OnClick="OnSelectColumns" />
+    <ProPlaButton Text="選択保存" OnClick="OnSaveSelection" />
+    <ProPlaButton Text="選択読込" OnClick="OnLoadSelection" />
+    <ProPlaButton Text="出力" Kind="Accent" OnClick="OnExport" />
+</div>
+
+@if (!string.IsNullOrWhiteSpace(HelpText))
+{
+    <div class="propla-help-text">@HelpText</div>
+}
+
+@code {
+    private readonly string SelectId = $"outputType_{Guid.NewGuid():N}";
+
+    [Parameter] public string SelectedOutputType { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> SelectedOutputTypeChanged { get; set; }
+    [Parameter] public IEnumerable<string> OutputTypes { get; set; } = new[] { "CSV", "Excel", "PDF" };
+    [Parameter] public string HelpText { get; set; } = "※選択した項目を保存する場合は「選択保存」を押し、次回は選択読込を押してご利用ください。";
+    [Parameter] public EventCallback OnSelectAll { get; set; }
+    [Parameter] public EventCallback OnClearAll { get; set; }
+    [Parameter] public EventCallback OnSelectColumns { get; set; }
+    [Parameter] public EventCallback OnSaveSelection { get; set; }
+    [Parameter] public EventCallback OnLoadSelection { get; set; }
+    [Parameter] public EventCallback OnExport { get; set; }
+
+    private async Task HandleOutputTypeChanged(ChangeEventArgs e)
+    {
+        SelectedOutputType = e.Value?.ToString() ?? string.Empty;
+        await SelectedOutputTypeChanged.InvokeAsync(SelectedOutputType);
+    }
+}

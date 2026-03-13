@@ -1,0 +1,45 @@
+@using global::ProPla.Web.Models.ProPla
+
+<div class="propla-panel propla-table-panel">
+    <table class="propla-table">
+        <thead>
+            <tr>
+                <th>選択</th>
+                <th>商品ID</th>
+                <th>商品区分</th>
+                <th>商品担当者</th>
+                <th>正式商品名</th>
+                <th>状態</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Items is null || !Items.Any())
+            {
+                <tr>
+                    <td colspan="6" class="propla-table-empty">データがありません。</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Items)
+                {
+                    <tr>
+                        <td>
+                            <ProPlaButton Text="選択" Kind="Primary" AdditionalClass="propla-button-small" OnClick="() => OnSelect.InvokeAsync(item.ProductCode)" />
+                        </td>
+                        <td>@item.ProductCode</td>
+                        <td>@item.ProductCategory</td>
+                        <td>@item.ProductPerson</td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Status</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter] public IEnumerable<ProPlaSearchResultRow> Items { get; set; } = Enumerable.Empty<ProPlaSearchResultRow>();
+    [Parameter] public EventCallback<string> OnSelect { get; set; }
+}
