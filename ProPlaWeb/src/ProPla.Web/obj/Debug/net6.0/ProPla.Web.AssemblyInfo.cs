@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProPla.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af6690d797867374010f709ff36b69d8e9d14309")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce0b4de25a0b7fcb3b9469b37cdcb75b49846664")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProPla.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProPla.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
